@@ -24,6 +24,14 @@ function printOdds($arr, $arrayNumber)
     // Start Solution Edits
     // dg599 9/29/25 I'm going to make a for loop that iterates over each array and then checks the go through the numbers and do modulous 2 with a remainder of 1 will be odd and then print the numbers.
 
+    for($i =0; $i <count($arr); $i++){
+        if($arr[$i] %2 == 1){
+            echo $arr[$i];
+            if($i < count($arr) -1){
+                echo ", ";
+            }
+        }
+    }
 
     // End Solution Edits
     echo "<br>______________________________________<br>";
