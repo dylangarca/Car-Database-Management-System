@@ -2,7 +2,7 @@
 
 require_once "base.php";
 
-$ucid = "mt85"; // <-- set your ucid
+$ucid = "dg599"; // <-- set your ucid
 
 // Don't edit the arrays below, they are used to test your code
 $array1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -22,6 +22,7 @@ function printOdds($arr, $arrayNumber)
 
     echo "Output Array: ";
     // Start Solution Edits
+    // dg599 9/29/25 I'm going to make a for loop that iterates over each array and then checks the go through the numbers and do modulous 2 with a remainder of 1 will be odd and then print the numbers.
 
 
     // End Solution Edits
