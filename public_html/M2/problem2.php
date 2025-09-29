@@ -29,11 +29,13 @@ function sumValues($arr, $arrayNumber)
     // Solve Challenge 1 here
     // For challenge 1 to get the sum of each array I am going to iterate through each array and then add each index together and then you will have the sum. 
 
-
+    for($i =0; $i< count($arr); $i++){
+        $total += $arr[$i];
+    }
 
     // Solve Challenge 2 here
     // For challenge 2 i think that you can take the sum and then divide by 100 to get 2 decimal places
-    $modifiedTotal = "?";
+    $modifiedTotal = number_format($total,2);
 
     // End Solution Edits
     echo "<p>Total Raw Value: {$total}</p>";
