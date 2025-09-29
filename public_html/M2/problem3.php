@@ -2,7 +2,7 @@
 
 require_once "base.php";
 
-$ucid = "mt85"; // <-- set your ucid
+$ucid = "dg599"; // <-- set your ucid
 
 // Don't edit the arrays below, they are used to test your code
 $array1 = [42, -17, 89, -256, 1024, -4096, 50000, -123456];
@@ -24,6 +24,10 @@ function bePositive($arr, $arrayNumber)
 
     $output = array_fill(0, count($arr), null); // Initialize output array
     // Start Solution Edits
+    //dg599 9/29 for challenge 1 the way to convert the number from negative to positive would be to use absolute value to get them to positive
+    //dg599 9.29 for challenge 2 the way to convert the value back to the original data type would be by casting it but before that you would have to first check 
+    //the original value and then after converting it to the absolute value check the value to see if it is the same if it isnt then convert it back using casting.
+
 
 
     // End Solution Edits
