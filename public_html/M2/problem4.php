@@ -33,6 +33,11 @@ function transformText($arr, $arrayNumber) {
     foreach ($arr as $index => $text) {
         // Start Solution Edits
 
+        //dg599 9/29 for challenge 1 the way im going to remove everything that isn't a number, letter or space is with the pregreplace function
+        //for challenge 2 i am going to use the uppercase function that lets me capitalizes the first letter but first i would have to make every letter into lowercase with the lowercase function
+        // for challenge 3 i can use the trim function to remove spaces at the front and end and then i will use preg replace again but this time to get rid of multiple spaces
+
+        
         
 
         // End Solution Edits
