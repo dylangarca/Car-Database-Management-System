@@ -28,7 +28,17 @@ function bePositive($arr, $arrayNumber)
     //dg599 9.29 for challenge 2 the way to convert the value back to the original data type would be by casting it but before that you would have to first check 
     //the original value and then after converting it to the absolute value check the value to see if it is the same if it isnt then convert it back using casting.
 
+    for($i =0; $i < count($arr); $i++){
+        $postiveValue = abs($arr[$i]);
 
+        if(is_int($arr[$i])){
+            $output[$i] = (int)$postiveValue;
+        }elseif(is_float($arr[$i])){
+            $output[$i] = (float)$postiveValue;
+        }elseif(is_string($arr[$i])){
+            $output[$i] = (string)$postiveValue;
+        }
+    }
 
     // End Solution Edits
     echo "<span>Output: </span>";
