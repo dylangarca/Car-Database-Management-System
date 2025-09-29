@@ -2,7 +2,7 @@
 
 require_once "base.php";
 
-$ucid = "mt85"; // <-- set your ucid
+$ucid = "dg599"; // <-- set your ucid
 
 // Don't edit the arrays below, they are used to test your code
 $array1 = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6];
@@ -27,11 +27,12 @@ function sumValues($arr, $arrayNumber)
     $total = 0;
     // Start Solution Edits
     // Solve Challenge 1 here
-
+    // For challenge 1 to get the sum of each array I am going to iterate through each array and then add each index together and then you will have the sum. 
 
 
 
     // Solve Challenge 2 here
+    // For challenge 2 i think that you can take the sum and then divide by 100 to get 2 decimal places
     $modifiedTotal = "?";
 
     // End Solution Edits
