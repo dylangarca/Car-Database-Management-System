@@ -36,7 +36,7 @@ Requirements:
         </ul>
     </nav>
     <!-- Edit your UCID here -->
-    <header>Header Section (mt85)</header>
+    <header>Header Section (dg599)</header>
     <!-- Don't make any other edits to the HTML -->
     <div class="container">
         <aside id="left-sidebar">
@@ -96,8 +96,92 @@ Requirements:
 
 <script>
     /* Solve the button logic here by finding and attaching an appropriate event listener and logic*/
+    /* dg599 10/6 */
+
+    const leftSidebar = document.getElementById('left-sidebar')
+    const rightSidebar = document.getElementById('right-sidebar')
+    const leftButton =  leftSidebar.querySelector('button')
+    const rightButton = rightSidebar.querySelector('button')
+    
+    leftButton.addEventListener('click', function(){
+        leftSidebar.classList.toggle('collapsed');
+        if(leftSidebar.classList.contains('collapsed')){
+            leftButton.textContent = '<';
+        }
+        else{
+            leftButton.textContent = ">";
+        }
+
+    });
+
+    rightButton.addEventListener('click', function(){
+        rightSidebar.classList.toggle('collapsed');
+        if(rightSidebar.classList.contains('collapsed')){
+            rightButton.textContent = '<';
+        }
+        else{
+            rightButton.textContent = ">";
+        }
+
+    });
+
+    
 </script>
 
 <style>
     /* You're free to make whatever edits you need here, just don't override anything in the styles.css */
+    /* dg599 10/6 */
+
+    body.challenge2{
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    body.challenge2 nav{
+        flex-shrink: 0;
+    }
+    body.challenge2 header{
+        flex-shrink: 0;
+    }
+
+    body.challenge2 .container{
+        flex: 1;
+        display: flex;
+        min-height: 0;
+        overflow: hidden;
+    }
+    body.challenge2 #left-sidebar{
+        width: 15%;
+        overflow-y: auto;
+        transition: 0.3s ease;
+    }
+    body.challenge2 #right-sidebar{
+        width: 15%;
+        overflow-y: auto;
+        transition: 0.3s ease;
+    }
+    body.challenge2 .content{
+        flex: 1;
+        overflow-y: auto;
+        min-width: 0;
+    }
+    body.challenge2 .collapsed{
+        width: 40px !important;
+        overflow: hidden;
+    }
+    body.challenge2 .collapsed ul{
+        display: none;
+    }
+    body.challenge2 aside button{
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        background-color: rgba(255,255,255, 0.2);
+        border: 1px solid rgba(255,255,255, 0.3);
+        color: white;
+        font-size: 16px;
+    }
 </style>
