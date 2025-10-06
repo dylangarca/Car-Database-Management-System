@@ -32,7 +32,7 @@ Requirements:
         </ul>
     </nav>
     <!-- Edit your UCID here -->
-    <header>Header Section (mt85)</header>
+    <header>Header Section (dg599)</header>
     <!-- Don't make any other edits to the HTML -->
     <nav>
         <button>Previous</button>
@@ -77,8 +77,106 @@ Requirements:
 
 <script>
     /* Solve the button logic here by finding and attaching an appropriate event listener and logic*/
+    /* dg599 10/06 */
+    const panels = document.querySelectorAll('.panel');
+    const buttons = document.querySelectorAll('body.challenge3 > nav:last-of-type button');
+    const prevButton = buttons[0];
+    const nextButton = buttons[1];
+
+    let currentIndex = 0;
+    const totalPanels = panels.length;
+
+
+    function showPanel(index) {
+    
+    panels.forEach(panel => {
+        panel.classList.remove('active');
+    });
+    
+    
+    panels[index].classList.add('active');
+    }
+
+    showPanel(currentIndex);
+
+    prevButton.addEventListener('click', function() {
+    currentIndex--;
+    if (currentIndex < 0) {
+        currentIndex = totalPanels - 1; // Loop to last panel
+    }
+    showPanel(currentIndex);
+    });
+
+    nextButton.addEventListener('click', function() {
+    currentIndex++;
+    if (currentIndex >= totalPanels) {
+        currentIndex = 0; 
+    }
+    showPanel(currentIndex);
+    });
+
+
 </script>
 
 <style>
     /* You're free to make whatever edits you need here, just don't override anything in the styles.css */
+    /* dg599 10/06 */
+
+    body.challenge3{
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    body.challenge3 > nav:first-of-type{
+        flex-shrink: 0;
+    }
+    body.challenge3 header{
+        flex-shrink: 0;
+    }
+    body.challenge3 > nav:last-of-type{
+        flex-shrink: 0;
+        text-align: center;
+        padding: 20px;
+    }
+    body.challenge3 > nav:last-of-type button{
+        padding:  10px 20px;
+        margin:  0 10px;
+        font-size: 16px;
+
+        color: black;
+        border: none;
+        border-radius: 5px;
+    }
+    body.challenge3 .carousel{
+        flex: 1;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        min-height: 0;
+    }
+    body.challenge3 .carousel-containter{
+        height: 100%;
+        width: 100%;
+
+    }
+    body.challenge3 .panel{
+        display: none;
+        height: 100%;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+    }
+    body.challenge3 .panel.active{
+        display: flex;
+    }
+    body.challenge3 .panel > div{
+        padding: 80px;
+        text-align: left;
+        max-width: 800px;
+    }
+    body.challenge3 .panel ul{
+        text-align: left;
+        margin-left: 20px;
+    }
 </style>
