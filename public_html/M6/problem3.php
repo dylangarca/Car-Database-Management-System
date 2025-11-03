@@ -57,7 +57,15 @@ function joinArrays($users, $activities) {
     //combine the user data with the activity data into 1 array
     // add the combined arry to joined array
 
-    
+    foreach($users as $user){
+        foreach ($activities as $activity){
+            if ($user["userId"] === $activity["userId"]){
+                $joined[] = array_merge($user, $activity);
+                break;
+            }
+        }
+    }
+
     
     
 
