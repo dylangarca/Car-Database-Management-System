@@ -50,6 +50,15 @@ function joinArrays($users, $activities) {
     // TODO Objective: Add logic to join both arrays on the userId property into one $joined array
     $joined = []; // result array
     // Start edits
+    //dg599 11/3
+    //plan
+    //loop through each user in the users array
+    // for each user find the matching activity in the activities array by the userid
+    //combine the user data with the activity data into 1 array
+    // add the combined arry to joined array
+
+    
+    
     
 
     // End edits
