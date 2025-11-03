@@ -30,6 +30,17 @@ function processCars($cars) {
     $processedCars = []; // result array
     $classic_age = 25; // don't change this value
     // Start edits
+
+    //dg599 11/3
+    //plan
+    //set current year to 2025 
+    //loop through each car in the cars array
+    //for each car, calculare the age
+    //for each car determine if it is a classic 
+    //create a new array with all original properties plus the age, and where it is a classic
+    //add the array to processedcars array 
+
+    
    
     // End edits
     echo "<pre>" . var_export($processedCars, true) . "</pre>";
