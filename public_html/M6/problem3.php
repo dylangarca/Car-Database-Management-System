@@ -53,9 +53,9 @@ function joinArrays($users, $activities) {
     //dg599 11/3
     //plan
     //loop through each user in the users array
-    // for each user find the matching activity in the activities array by the userid
+    //for each user find the matching activity in the activities array by the userid
     //combine the user data with the activity data into 1 array
-    // add the combined arry to joined array
+    //add the combined arry to joined array
 
     foreach($users as $user){
         foreach ($activities as $activity){
