@@ -44,6 +44,7 @@
     color: #fff;
 }
 </style>
+<php require(__DIR__ )
 <div class="jumbotron">
     <!-- TODO replace your name -->
     <h1 class="display-4">Welcome to Dylan's project</h1>
