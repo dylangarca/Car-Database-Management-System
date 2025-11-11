@@ -1,51 +1,47 @@
 <?php
-/**
- * Check if the user is logged in and optionally redirect to $destination.
- * @param bool $redirect Whether to redirect if not logged in.
- * @param string $destination The destination to redirect to if not logged in (relative to BASE_PATH or absolute).
- * @return bool True if the user is logged in, false otherwise.
- */
-function is_logged_in($redirect = false, $destination = "login.php")
-{
-    $isLoggedIn = isset($_SESSION["user"]);
-    if ($redirect && !$isLoggedIn) {
-        //if this triggers, the calling script won't receive a reply since die()/exit() terminates it
-        flash("You must be logged in to view this page", "warning");
-        $path = get_url($destination);
+//note we need to go up 1 more directory
+require(__DIR__ . "/../../../partials/nav.php");
 
-        die(header("Location: $path"));
-    }
-    return $isLoggedIn;
+if (!has_role("Admin")) {
+    flash("You don't have permission to view this page", "warning");
+    die(header("Location: " . get_url("landing.php")));
 }
-function has_role($role)
-{
-    if (is_logged_in() && isset($_SESSION["user"]["roles"])) {
-        foreach ($_SESSION["user"]["roles"] as $r) {
-            if ($r["name"] === $role) {
-                return true;
+
+if (isset($_POST["name"],$_POST["description"])) {
+    $name = se($_POST, "name", "", false);
+    $desc = se($_POST, "description", "", false);
+    if (empty($name)) {
+        flash("Name is required", "warning");
+    } else {
+        $db = getDB();
+        $stmt = $db->prepare("INSERT INTO Roles (name, description, is_active) VALUES(:name, :desc, 1)");
+        try {
+            $stmt->execute([":name" => $name, ":desc" => $desc]);
+            flash("Successfully created role $name!", "success");
+        } catch (PDOException $e) {
+            if ($e->errorInfo[1] === 1062) {
+                flash("A role with this name already exists, please try another", "warning");
+            } else {
+                flash("There was an error creating the role, please try again later", "danger");
+                error_log("Error creating role: " . var_export($e->errorInfo, true));
             }
         }
     }
-    return false;
 }
-function get_username()
-{
-    if (is_logged_in()) { //we need to check for login first because "user" key may not exist
-        return se($_SESSION["user"], "username", "", false);
-    }
-    return "";
-}
-function get_user_email()
-{
-    if (is_logged_in()) { //we need to check for login first because "user" key may not exist
-        return se($_SESSION["user"], "email", "", false);
-    }
-    return "";
-}
-function get_user_id()
-{
-    if (is_logged_in()) { //we need to check for login first because "user" key may not exist
-        return se($_SESSION["user"], "id", false, false);
-    }
-    return -1;
-}
+?>
+<h3>Create Role</h3>
+<form method="POST">
+    <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" required />
+    </div>
+    <div>
+        <label for="d">Description</label>
+        <textarea name="description" id="d"></textarea>
+    </div>
+    <input type="submit" value="Create Role" />
+</form>
+<?php
+//note we need to go up 1 more directory
+require_once(__DIR__ . "/../../../partials/flash.php");
+?>

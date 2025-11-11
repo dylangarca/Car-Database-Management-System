@@ -1,15 +1,19 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+
+//dg599 11/5
 ?>
 <h3>Register</h3>
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input id="email" type="email" name="email" required />
+        <input id="email" type="email" name="email" required 
+                value ="<?php echo se($_POST, 'email', ' ', false); ?>" />
     </div>
     <div>
         <label for="username">Username</label>
-        <input type="text" name="username" required maxlength="30" />
+        <input type="text" name="username" required maxlength="30" 
+                value ="<?php echo se($_POST, 'username', ' ', false); ?>" />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -26,11 +30,42 @@ require(__DIR__ . "/../../partials/nav.php");
         //TODO 1: implement JavaScript validation (you'll do this on your own towards the end of Milestone1)
         //ensure it returns false for an error and true for success
 
-        return true;
+        //dg599 11/10 
+        // the code will check whether each input of email, username, and password is valid and if it is not valid it will give a warning with the error message
+
+        let isValid = true;
+        const email = form.email.value.trim();
+        const username = form.username.value.trim();
+        const password = form.password.value;
+        const confirm = form.confirm.value;
+
+        if(!email || !email.includes('@')){
+            flash('Please enter a valid email address', 'warning');
+            isValid = false;
+        }
+
+        if(!username || username.length < 3){
+            flash('Username must be at least 3 characters', 'warning');
+            isValid = false;
+        }
+
+        if(password.length < 8){
+            flash('Password must be at least 8 characters', 'warning');
+            isValid = false;
+        }
+
+        if(password !== confirm){
+            flash('Passwords do not match', 'warning');
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 <?php
 //TODO 2: add PHP Code
+
+//dg599 11/5
 if (isset($_POST["email"], $_POST["password"], $_POST["confirm"], $_POST["username"])) {
 
     $email = se($_POST, "email", "", false);
