@@ -1,11 +1,13 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+//dg599 11/5
 ?>
 <h3>Login</h3>
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email or Username</label>
-        <input id="email" type="text" name="email" required />
+        <input id="email" type="text" name="email" required
+                value ="<?php echo se($_POST, 'email', ' ', false); ?>" />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -17,12 +19,34 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation (you'll do this on your own towards the end of Milestone1)
         //ensure it returns false for an error and true for success
+        
+        //dg599 11/10 the code will check whether the email or username is filled out and if the passwords is filled out or if it is at least 8 characters 
 
-        return true;
+        let isValid = true;
+
+        const email = form.email.value.trim();
+        const password = form.password.value;
+
+        if(!email){
+            flash('Email or Username is required', 'warning');
+            isValid = false ;
+        }
+
+        if(!password){
+            flash('Password is required', 'warning');
+            isValid = false;
+        }
+        else if (password.length < 8){
+            flash('Password must be at least 8 characters', 'warning');
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 <?php
 //TODO 2: add PHP Code
+//dg599 11/5
 if (isset($_POST["email"], $_POST["password"])) {
     // still leveraging the property as "email", but it can be a username
     $email = se($_POST, "email", "", false);
@@ -51,7 +75,6 @@ if (isset($_POST["email"], $_POST["password"])) {
             $hasError = true;
         }
     }
-
 
     if (empty($password)) {
         flash("Password must not be empty.", "danger");

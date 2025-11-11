@@ -5,6 +5,7 @@ if (!is_logged_in()) {
 }
 ?>
 <?php
+//dg599 11/5
 $user_id = get_user_id(); // get id from session
 $email = get_user_email(); // get email from session
 $username = get_username(); // get username from session
@@ -147,6 +148,7 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
     }
 }
 ?>
+<!-- dg599 11/5-->
 <h3>Profile</h3>
 <form method="POST" onsubmit="return validate(this);">
     <div class="mb-3">
@@ -175,22 +177,50 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
 </form>
 
 <script>
-    function validate(form) {
+function validate(form) {
+        //dg599 11/10 added the js validation neeeded for username password, and email
+        let username = form.username.value.trim();
+        let currentPw = form.currentPassword.value;
         let pw = form.newPassword.value;
         let con = form.confirmPassword.value;
         let isValid = true;
         //TODO add other client side validation....
-
-        //example of using flash via javascript
-        //find the flash container, create a new element, appendChild
-        // NOTE: we'll extract the flash code to a function later
-        if (pw !== con) { // first JS validation example
+    if (!email || !email.includes('@')) {
+        flash("Please enter a valid email address", "danger");
+        isValid = false;
+    }
+    
+    
+    // Username validation
+    if (!username || username.length < 3) {
+        flash("Username must be at least 3 characters", "danger");
+        isValid = false;
+    }
+    
+    // Password change validation (only if user is trying to change password)
+    if (currentPw || pw || con) {
+        // If any password field is filled, all must be filled
+        if (!currentPw || !pw || !con) {
+            flash("All password fields must be filled to change password", "danger");
+            isValid = false;
+        }
+        
+        // Check new password length
+        if (pw && pw.length < 8) {
+            flash("New password must be at least 8 characters", "danger");
+            isValid = false;
+        }
+        
+        // Check passwords match
+        if (pw !== con) {
             flash("Password and confirm password must match", "danger");
             isValid = false;
         }
-        // returning false will prevent the form from submitting
-        return isValid;
     }
+
+    
+    return isValid;
+}
 </script>
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
