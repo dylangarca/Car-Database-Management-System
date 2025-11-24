@@ -122,19 +122,19 @@ function validate(form) {
     
     // Validate make
     if (!make || make.length < 2) {
-        alert('Make must be at least 2 characters long');
+        flash('Make must be at least 2 characters long', 'warning');
         isValid = false;
     }
     
     // Validate model
     if (!model || model.length < 1) {
-        alert('Model is required');
+        flash('Model is required', 'warning');
         isValid = false;
     }
     
     // Validate year
     if (!year || year < 1900 || year > currentYear + 1) {
-        alert('Please enter a valid year between 1900 and ' + (currentYear + 1));
+        flash('Please enter a valid year between 1900 and ' + (currentYear + 1), 'warning');
         isValid = false;
     }
     
