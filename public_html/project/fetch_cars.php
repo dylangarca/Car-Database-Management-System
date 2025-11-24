@@ -54,7 +54,9 @@ if (isset($_POST["search_query"])) {
                         $model = isset($title_parts[1]) ? $title_parts[1] : "";
                         
                         // Extract year from content 
-                        $year = date("Y"); // Default to current year
+                        $content = se($car_data, "content", "", false);
+                        preg_match('/\b(19\d{2}|20\d{2})\b/', $content, $matches);
+                        $year = $matches[0] ?? 1900;
                         
                         // Get type from additional field (contains "Sedan", "Hatchback", etc.)
                         $additional = se($car_data, "additional", "", false);
