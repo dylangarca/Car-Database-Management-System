@@ -2,7 +2,6 @@
 //include functions here so we can have it on every page that uses the nav bar
 //that way we don't need to include so many other files on each page
 //nav will pull in functions and functions will pull in db
-
 // checking to see if domain has a port number attached (localhost)
 $domain = $_SERVER["HTTP_HOST"];
 if (strpos($domain, ":")) {
@@ -28,18 +27,27 @@ require(__DIR__."/../lib/functions.php");
 <nav>
     <ul>
         <?php if (is_logged_in()) : ?>
-            <li><a href="<?php get_url('landing.php', true);?>">Landing</a></li>
+            <li><a href="<?php get_url('landing.php', true);?>">Home</a></li>
+            
+            <!-- Car Management Links -->
+            <li><a href="<?php get_url('list_cars.php', true);?>">Browse Cars</a></li>
+            <li><a href="<?php get_url('create_car.php', true);?>">Add Car</a></li>
+            
             <li><a href="<?php get_url('profile.php', true);?>">Profile</a></li>
         <?php endif; ?>
+        
         <?php if (!is_logged_in()) : ?>
             <li><a href="<?php get_url('login.php', true);?>">Login</a></li>
             <li><a href="<?php get_url('register.php', true);?>">Register</a></li>
         <?php endif; ?>
+        
         <?php if (has_role("Admin")) : ?>
-            <li><a href="<?php get_url('admin/create_role.php', true); ?>">Create Role</a></li>
-            <li><a href="<?php get_url('admin/list_roles.php', true); ?>">List Roles</a></li>
-            <li><a href="<?php get_url('admin/assign_roles.php', true); ?>">Assign Roles</a></li>
+    <li><a href="<?php get_url('fetch_cars.php', true); ?>">Fetch API Cars</a></li>
+    <li><a href="<?php get_url('admin/create_role.php', true); ?>">Create Role</a></li>
+    <li><a href="<?php get_url('admin/list_roles.php', true); ?>">List Roles</a></li>
+    <li><a href="<?php get_url('admin/assign_roles.php', true); ?>">Assign Roles</a></li>
         <?php endif; ?>
+        
         <?php if (is_logged_in()) : ?>
             <li><a href="<?php get_url('logout.php', true);?>">Logout</a></li>
         <?php endif; ?>
