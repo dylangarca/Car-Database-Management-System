@@ -8,12 +8,12 @@ require(__DIR__ . "/../../partials/nav.php");
     <div>
         <label for="email">Email</label>
         <input id="email" type="email" name="email" required 
-                value ="<?php echo se($_POST, 'email', ' ', false); ?>" />
+                value ="<?php echo se($_POST, 'email', '', false); ?>" />
     </div>
     <div>
         <label for="username">Username</label>
         <input type="text" name="username" required maxlength="30" 
-                value ="<?php echo se($_POST, 'username', ' ', false); ?>" />
+                value ="<?php echo se($_POST, 'username', '', false); ?>" />
     </div>
     <div>
         <label for="pw">Password</label>
