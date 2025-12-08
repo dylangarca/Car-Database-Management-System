@@ -1,6 +1,6 @@
 <?php
 //note we need to go up 1 more directory
-require(__DIR__ . "/../../../partials/nav.php");
+require(__DIR__ . "/../../../partials/nav1.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
@@ -78,7 +78,7 @@ try {
                     <td><?php echo (se($role, "is_active", 0, false) ? "active" : "disabled"); ?></td>
                     <td>
                         <!-- nested form to handle toggling the role -->
-                        <form method="POST">
+                        <form method="POST"style="display: inline; background:none; padding: 0;" >
                             <!-- hidden field to carry the id, the user shouldn't be prompted to edit this-->
                             <input type="hidden" name="role_id" value="<?php se($role, 'id'); ?>" />
                             <!-- used to persist the search criteria since this is a different form -->

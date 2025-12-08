@@ -1,58 +1,71 @@
 <?php
-// dg599 11/24
 require(__DIR__ . "/../../partials/nav1.php");
+
+if (!is_logged_in()) {
+    flash("You must be logged in to view your garage", "warning");
+    die(header("Location: login.php"));
+}
+
+$user_id = get_user_id();
 
 // Pagination and filtering
 $limit = (int)se($_GET, "limit", 10, false);
 if ($limit < 1 || $limit > 100) {
-    $limit = 10; // Default to 10 if invalid
+    $limit = 10;
 }
 
 $make_filter = se($_GET, "make", "", false);
 $year_filter = se($_GET, "year", "", false);
 $type_filter = se($_GET, "type", "", false);
-$sort_by = se($_GET, "sort", "created", false); // Default sort by created date
-$order = se($_GET, "order", "DESC", false); // Default descending
+$sort_by = se($_GET, "sort", "UserCars.created", false);
+$order = se($_GET, "order", "DESC", false);
 
-// Allowed sort columns 
-$allowed_sorts = ["make", "model", "year", "type", "created", "modified"];
+$allowed_sorts = ["make", "model", "year", "type", "UserCars.created"];
 if (!in_array($sort_by, $allowed_sorts)) {
-    $sort_by = "created";
+    $sort_by = "UserCars.created";
 }
 
-// Allowed order directions
 if (!in_array($order, ["ASC", "DESC"])) {
     $order = "DESC";
 }
 
 // Build query
-$query = "SELECT * FROM Cars WHERE 1=1";
-$params = [];
+$query = "SELECT Cars.*, UserCars.created as added_date 
+          FROM Cars 
+          INNER JOIN UserCars ON Cars.id = UserCars.car_id 
+          WHERE UserCars.user_id = :user_id";
+$params = [":user_id" => $user_id];
 
 if (!empty($make_filter)) {
-    $query .= " AND make LIKE :make";
+    $query .= " AND Cars.make LIKE :make";
     $params[":make"] = "%" . $make_filter . "%";
 }
 
 if (!empty($year_filter)) {
-    $query .= " AND year = :year";
+    $query .= " AND Cars.year = :year";
     $params[":year"] = $year_filter;
 }
 
 if (!empty($type_filter)) {
-    $query .= " AND type LIKE :type";
+    $query .= " AND Cars.type LIKE :type";
     $params[":type"] = "%" . $type_filter . "%";
 }
 
+// Get total count
+$count_query = str_replace("SELECT Cars.*, UserCars.created as added_date", "SELECT COUNT(*)", $query);
+$db = getDB();
+$count_stmt = $db->prepare($count_query);
+foreach ($params as $key => $value) {
+    $count_stmt->bindValue($key, $value);
+}
+$count_stmt->execute();
+$total_count = $count_stmt->fetchColumn();
+
+// Add sorting and limit
 $query .= " ORDER BY $sort_by $order LIMIT :limit";
 
-$db = getDB();
 $stmt = $db->prepare($query);
-
-// Bind limit as integer
 $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
-
-// Bind other params
 foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value);
 }
@@ -61,31 +74,31 @@ try {
     $stmt->execute();
     $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
-    flash("Error fetching cars: " . $e->getMessage(), "danger");
-    error_log("Error fetching cars: " . var_export($e, true));
+    flash("Error fetching your garage", "danger");
+    error_log("Error fetching garage: " . var_export($e, true));
     $cars = [];
-}
-
-// Get user's garage cars if logged in
-$user_garage_ids = [];
-if (is_logged_in()) {
-    $garage_stmt = $db->prepare("SELECT car_id FROM UserCars WHERE user_id = :user_id");
-    $garage_stmt->execute([":user_id" => get_user_id()]);
-    $garage_results = $garage_stmt->fetchAll(PDO::FETCH_COLUMN);
-    $user_garage_ids = $garage_results ?: [];
 }
 ?>
 
 <div class="container-fluid">
-    <h1>Car List</h1>
+    <h1>My Garage</h1>
     
     <div class="mb-3">
-        <a href="create_car.php" class="btn btn-primary">Add New Car</a>
+        <p><strong>Total cars in garage: <?php echo $total_count; ?></strong></p>
+        <p>Showing: <?php echo count($cars); ?> car(s)</p>
     </div>
-
-    <!-- Filter/Sort Form -->
-    <!-- Filter/Sort Form -->
-<form method="GET" class="filter-form">
+    
+    <?php if ($total_count > 0): ?>
+        <form method="POST" action="remove_all_garage.php" style="display: inline; background:none; padding: 0; ">
+            <button type="submit" class="btn btn-danger"  onclick="return confirm('Are you sure you want to remove ALL cars from your garage?')">
+                Remove All Cars from Garage
+            </button>
+        </form>
+    <?php endif; ?>
+    
+    <hr>
+    
+    <form method="GET" class="filter-form">
     <h3>Filter & Sort</h3>
     
     <div class="mb-3">
@@ -118,7 +131,7 @@ if (is_logged_in()) {
     <div class="mb-3">
         <label for="sort">Sort by</label>
         <select id="sort" name="sort" class="form-select">
-            <option value="created" <?php echo ($sort_by == "created") ? "selected" : ""; ?>>Date Added</option>
+            <option value="UserCars.created" <?php echo ($sort_by == "UserCars.created") ? "selected" : ""; ?>>Date Added</option>
             <option value="make" <?php echo ($sort_by == "make") ? "selected" : ""; ?>>Make</option>
             <option value="model" <?php echo ($sort_by == "model") ? "selected" : ""; ?>>Model</option>
             <option value="year" <?php echo ($sort_by == "year") ? "selected" : ""; ?>>Year</option>
@@ -135,19 +148,21 @@ if (is_logged_in()) {
     </div>
     
     <button type="submit" class="btn btn-primary">Apply Filters</button>
-    <a href="list_cars.php" class="btn btn-secondary">Clear Filters</a>
+    <a href="my_garage.php" class="btn btn-secondary">Clear Filters</a>
 </form>
     
-    <!-- Results -->
     <?php if (empty($cars)): ?>
         <div class="alert alert-info">
-            <strong>No results available.</strong> Try different filters or add a new car.
+            <strong>No results available.</strong> 
+            <?php if ($total_count > 0): ?>
+                Try adjusting your filters.
+            <?php else: ?>
+                Start adding cars to your garage from the <a href="list_cars.php">car list</a>!
+            <?php endif; ?>
         </div>
     <?php else: ?>
-        <p>Showing <?php echo count($cars); ?> car(s)</p>
         <div class="row">
             <?php foreach ($cars as $car): ?>
-                <?php $in_garage = in_array($car['id'], $user_garage_ids); ?>
                 <div class="col-md-4 mb-3">
                     <div class="card" style="border: 1px solid #ddd; border-radius: 0.5rem; padding: 1rem;">
                         <?php if (!empty($car["image_url"])): ?>
@@ -162,28 +177,20 @@ if (is_logged_in()) {
                         
                         <h3><?php echo se($car, 'year', ''); ?> <?php echo se($car, 'make', ''); ?> <?php echo se($car, 'model', ''); ?></h3>
                         <p><strong>Type:</strong> <?php echo se($car, 'type', 'N/A'); ?></p>
-                        <p><strong>Source:</strong> <?php echo (se($car, 'is_api', 0, false) == 1) ? " API" : " Manual"; ?></p>
-                        
-                        <?php if (is_logged_in()): ?>
-                            <form method="POST" action="toggle_garage.php" style="margin-bottom: 0.5rem;">
-                                <input type="hidden" name="car_id" value="<?php echo se($car, 'id', ''); ?>" />
-                                <input type="hidden" name="redirect" value="list_cars.php?<?php echo http_build_query($_GET); ?>" />
-                                <?php if ($in_garage): ?>
-                                    <input type="hidden" name="action" value="remove" />
-                                    <button type="submit" class="btn btn-sm btn-danger">✓ In Garage</button>
-                                <?php else: ?>
-                                    <input type="hidden" name="action" value="add" />
-                                    <button type="submit" class="btn btn-sm btn-success">+ Add to Garage</button>
-                                <?php endif; ?>
-                            </form>
-                        <?php endif; ?>
+                        <p><small>Added: <?php 
+                            $added_date = se($car, 'added_date', '', false);
+                            echo !empty($added_date) ? date('M d, Y', strtotime($added_date)) : 'Unknown';
+                        ?></small></p>
                         
                         <div class="mt-2">
                             <a href="view_car.php?id=<?php echo se($car, 'id', ''); ?>" class="btn btn-info">View Details</a>
-                            <a href="edit_car.php?id=<?php echo se($car, 'id', ''); ?>" class="btn btn-warning">Edit</a>
-                            <a href="delete_car.php?id=<?php echo se($car, 'id', ''); ?>" 
-                               class="btn btn-danger" 
-                               onclick="return confirm('Are you sure you want to delete this car?')">Delete</a>
+                            
+                            <form method="POST" action="toggle_garage.php" style="display: inline;">
+                                <input type="hidden" name="car_id" value="<?php echo se($car, 'id', ''); ?>" />
+                                <input type="hidden" name="action" value="remove" />
+                                <input type="hidden" name="redirect" value="my_garage.php?<?php echo http_build_query($_GET); ?>" />
+                                <button type="submit" class="btn btn-danger" >Remove from Garage</button>
+                            </form>
                         </div>
                     </div>
                 </div>

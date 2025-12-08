@@ -25,6 +25,14 @@ try {
     error_log("Error fetching car: " . var_export($e, true));
     die(header("Location: list_cars.php"));
 }
+
+// Check if car is in user's garage
+$in_garage = false;
+if (is_logged_in()) {
+    $check_stmt = $db->prepare("SELECT id FROM UserCars WHERE user_id = :user_id AND car_id = :car_id LIMIT 1");
+    $check_stmt->execute([":user_id" => get_user_id(), ":car_id" => $car_id]);
+    $in_garage = $check_stmt->fetch(PDO::FETCH_ASSOC) !== false;
+}
 ?>
 
 <div class="container-fluid">
@@ -38,6 +46,20 @@ try {
         <?php endif; ?>
         
         <h2><?php echo se($car, 'year', ''); ?> <?php echo se($car, 'make', ''); ?> <?php echo se($car, 'model', ''); ?></h2>
+        
+        <?php if (is_logged_in()): ?>
+            <form method="POST" action="toggle_garage.php" style="margin-bottom: 1rem;">
+                <input type="hidden" name="car_id" value="<?php echo $car_id; ?>" />
+                <input type="hidden" name="redirect" value="view_car.php?id=<?php echo $car_id; ?>" />
+                <?php if ($in_garage): ?>
+                    <input type="hidden" name="action" value="remove" />
+                    <button type="submit" class="btn btn-danger">Remove from My Garage</button>
+                <?php else: ?>
+                    <input type="hidden" name="action" value="add" />
+                    <button type="submit" class="btn btn-success">Add to My Garage</button>
+                <?php endif; ?>
+            </form>
+        <?php endif; ?>
         
         <table class="table">
             <tr>
