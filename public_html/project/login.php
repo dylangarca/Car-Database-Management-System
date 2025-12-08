@@ -7,7 +7,7 @@ require(__DIR__ . "/../../partials/nav.php");
     <div>
         <label for="email">Email or Username</label>
         <input id="email" type="text" name="email" required
-                value ="<?php echo se($_POST, 'email', ' ', false); ?>" />
+                value ="<?php echo se($_POST, 'email', '', false); ?>" />
     </div>
     <div>
         <label for="pw">Password</label>

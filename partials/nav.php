@@ -31,6 +31,7 @@ require(__DIR__."/../lib/functions.php");
             
             <!-- Car Management Links -->
             <li><a href="<?php get_url('list_cars.php', true);?>">Browse Cars</a></li>
+            <li><a href="<?php get_url('my_garage.php', true);?>">My Garage</a></li>
             <li><a href="<?php get_url('create_car.php', true);?>">Add Car</a></li>
             
             <li><a href="<?php get_url('profile.php', true);?>">Profile</a></li>
@@ -42,10 +43,13 @@ require(__DIR__."/../lib/functions.php");
         <?php endif; ?>
         
         <?php if (has_role("Admin")) : ?>
-    <li><a href="<?php get_url('fetch_cars.php', true); ?>">Fetch API Cars</a></li>
-    <li><a href="<?php get_url('admin/create_role.php', true); ?>">Create Role</a></li>
-    <li><a href="<?php get_url('admin/list_roles.php', true); ?>">List Roles</a></li>
-    <li><a href="<?php get_url('admin/assign_roles.php', true); ?>">Assign Roles</a></li>
+            <li><a href="<?php get_url('fetch_cars.php', true); ?>">Fetch API Cars</a></li>
+            <li><a href="<?php get_url('all_associations.php', true); ?>">All Associations</a></li>
+            <li><a href="<?php get_url('unassociated_cars.php', true); ?>">Unassociated Cars</a></li>
+            <li><a href="<?php get_url('assign_cars.php', true); ?>">Assign Cars</a></li>
+            <li><a href="<?php get_url('admin/create_role.php', true); ?>">Create Role</a></li>
+            <li><a href="<?php get_url('admin/list_roles.php', true); ?>">List Roles</a></li>
+            <li><a href="<?php get_url('admin/assign_roles.php', true); ?>">Assign Roles</a></li>
         <?php endif; ?>
         
         <?php if (is_logged_in()) : ?>
