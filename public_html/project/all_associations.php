@@ -81,7 +81,7 @@ try {
     </div>
     
     <?php if (!empty($username_filter)): ?>
-        <form method="POST" action="admin_remove_user_associations.php" style="display: inline;">
+        <form method="POST" action="admin_remove_user_associations.php" style="display: inline; background:none; padding: 0;">
             <input type="hidden" name="username_filter" value="<?php echo $username_filter; ?>" />
             <button type="submit" class="btn btn-danger" onclick="return confirm('Remove ALL associations for users matching: <?php echo $username_filter; ?>?')">
                 Remove All Associations for Filtered Users

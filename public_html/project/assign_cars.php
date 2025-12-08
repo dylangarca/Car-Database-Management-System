@@ -1,5 +1,5 @@
 <?php
-require(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav1.php");
 
 if (!has_role("Admin")) {
     flash("Only administrators can access this page", "danger");
@@ -71,24 +71,23 @@ if (isset($_POST["selected_cars"], $_POST["selected_users"])) {
     <h1>Assign Cars to Users (Admin)</h1>
     <p>Search for cars and users, then select which associations to create/remove</p>
     
-    <form method="POST" class="mb-4" style="border: 1px solid #ddd; padding: 1rem; border-radius: 0.5rem;">
+    <form method="POST" class="filter-form">
         <h3>Search</h3>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="car_search">Car Make or Model (partial match)</label>
-                <input type="text" id="car_search" name="car_search" 
-                       value="<?php echo se($_POST, 'car_search', '', false); ?>" 
-                       placeholder="e.g., Toyota, Camry" />
-                <small>Leave blank to skip car search</small>
-            </div>
-            
-            <div class="col-md-6 mb-3">
-                <label for="user_search">Username (partial match)</label>
-                <input type="text" id="user_search" name="user_search" 
-                       value="<?php echo se($_POST, 'user_search', '', false); ?>" 
-                       placeholder="e.g., john" />
-                <small>Leave blank to skip user search</small>
-            </div>
+        
+        <div class="mb-3">
+            <label for="car_search">Car Make or Model (partial match)</label>
+            <input type="text" id="car_search" name="car_search" class="form-control"
+                   value="<?php echo se($_POST, 'car_search', '', false); ?>" 
+                   placeholder="e.g., Toyota, Camry" />
+            <small>Leave blank to skip car search</small>
+        </div>
+        
+        <div class="mb-3">
+            <label for="user_search">Username (partial match)</label>
+            <input type="text" id="user_search" name="user_search" class="form-control"
+                   value="<?php echo se($_POST, 'user_search', '', false); ?>" 
+                   placeholder="e.g., john" />
+            <small>Leave blank to skip user search</small>
         </div>
         
         <button type="submit" class="btn btn-primary">Search</button>

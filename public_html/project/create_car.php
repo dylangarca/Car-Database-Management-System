@@ -1,6 +1,6 @@
 <?php
 // dg599 11/24
-require(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav1.php");
 
 // Check if user is logged in
 if (!is_logged_in()) {
