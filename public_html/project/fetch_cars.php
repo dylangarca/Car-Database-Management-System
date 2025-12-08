@@ -1,6 +1,6 @@
 <?php
 // dg599 11/24
-require(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav1.php");
 require_once(__DIR__ . "/../../lib/api_helper.php");
 
 // Check if user is admin (only admins can fetch API data)
