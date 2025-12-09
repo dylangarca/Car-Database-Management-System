@@ -1,4 +1,5 @@
 <?php
+//dg599 12/7
 require_once(__DIR__ . "/../../partials/nav1.php");
 if (!is_logged_in()) {
     die(header("Location: login.php"));
