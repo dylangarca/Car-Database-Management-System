@@ -5,14 +5,14 @@ require(__DIR__ . "/../../partials/nav1.php");
 // Check if user is logged in
 if (!is_logged_in()) {
     flash("You must be logged in to edit a car", "warning");
-    die(header("Location: login.php"));
+    redirect("Location: login.php");
 }
 
 $car_id = (int)se($_GET, "id", 0, false);
 
 if ($car_id <= 0) {
     flash("Invalid car ID", "danger");
-    die(header("Location: list_cars.php"));
+    redirect("Location: list_cars.php");
 }
 
 $db = getDB();
@@ -25,12 +25,12 @@ try {
     
     if (!$car) {
         flash("Car not found", "danger");
-        die(header("Location: list_cars.php"));
+        redirect("Location: list_cars.php");
     }
 } catch (Exception $e) {
     flash("Error fetching car details", "danger");
     error_log("Error fetching car: " . var_export($e, true));
-    die(header("Location: list_cars.php"));
+    redirect("Location: list_cars.php");
 }
 
 // Handle form submission

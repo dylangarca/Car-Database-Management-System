@@ -6,7 +6,7 @@ $car_id = (int)se($_GET, "id", 0, false);
 
 if ($car_id <= 0) {
     flash("Invalid car ID", "danger");
-    die(header("Location: list_cars.php"));
+    redirect("list_cars.php");
 }
 
 $db = getDB();
@@ -18,12 +18,12 @@ try {
     
     if (!$car) {
         flash("Car not found", "danger");
-        die(header("Location: list_cars.php"));
+        redirect("list_cars.php");
     }
 } catch (Exception $e) {
     flash("Error fetching car details", "danger");
     error_log("Error fetching car: " . var_export($e, true));
-    die(header("Location: list_cars.php"));
+    redirect("list_cars.php");
 }
 
 // Check if car is in user's garage
