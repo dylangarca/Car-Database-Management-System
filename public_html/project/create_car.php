@@ -5,7 +5,7 @@ require(__DIR__ . "/../../partials/nav1.php");
 // Check if user is logged in
 if (!is_logged_in()) {
     flash("You must be logged in to create a car entry", "warning");
-    die(header("Location: login.php"));
+    redirect("Location: login.php");
 }
 
 // Handle form submission
@@ -51,7 +51,7 @@ if (isset($_POST["make"], $_POST["model"], $_POST["year"])) {
             ]);
             flash("Car added successfully!", "success");
             // Redirect to list page after successful creation
-            die(header("Location: list_cars.php"));
+            redirect("Location: list_cars.php");
         } catch (Exception $e) {
             flash("Error creating car entry: " . $e->getMessage(), "danger");
             error_log("Error creating car: " . var_export($e, true));

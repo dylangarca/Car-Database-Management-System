@@ -4,16 +4,17 @@ require(__DIR__ . "/../../partials/nav.php");
 
 if (!is_logged_in()) {
     flash("You must be logged in to manage your garage", "warning");
-    die(header("Location: login.php"));
+    redirect("login.php");
 }
 
 $car_id = (int)se($_POST, "car_id", 0, false);
 $action = se($_POST, "action", "", false);
 $redirect = se($_POST, "redirect", "list_cars.php", false);
+redirect("list_cars.php");
 
 if ($car_id <= 0) {
     flash("Invalid car ID", "danger");
-    die(header("Location: $redirect"));
+    redirect("list_cars.php");
 }
 
 $db = getDB();
@@ -26,7 +27,7 @@ $car = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$car) {
     flash("Car not found", "danger");
-    die(header("Location: $redirect"));
+    redirect("list_cars.php");
 }
 
 // Check if already in garage
@@ -62,5 +63,5 @@ if ($action === "add") {
     }
 }
 
-die(header("Location: $redirect"));
+redirect("list_cars.php");
 ?>
