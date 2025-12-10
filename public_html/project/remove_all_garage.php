@@ -4,7 +4,7 @@ require(__DIR__ . "/../../partials/nav.php");
 
 if (!is_logged_in()) {
     flash("You must be logged in", "warning");
-    die(header("Location: login.php"));
+    redirect("Location: login.php");
 }
 
 $user_id = get_user_id();
@@ -20,5 +20,5 @@ try {
     error_log("Error removing all from garage: " . var_export($e, true));
 }
 
-die(header("Location: my_garage.php"));
+redirect("Location: my_garage.php");
 ?>

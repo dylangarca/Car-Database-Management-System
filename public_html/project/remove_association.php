@@ -8,11 +8,10 @@ if (!has_role("Admin")) {
 }
 
 $association_id = (int)se($_POST, "association_id", 0, false);
-$redirect = se($_POST, "redirect", "all_associations.php", false);
 
 if ($association_id <= 0) {
     flash("Invalid association ID", "danger");
-    die(header("Location: " . $redirect));
+    redirect("all_associations.php");
 }
 
 $db = getDB();
@@ -26,5 +25,5 @@ try {
     error_log("Error: " . var_export($e, true));
 }
 
-die(header("Location: " . $redirect));
+redirect("all_associations.php");
 ?>
