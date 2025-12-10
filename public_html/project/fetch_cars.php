@@ -6,7 +6,7 @@ require_once(__DIR__ . "/../../lib/api_helper.php");
 // Check if user is admin (only admins can fetch API data)
 if (!has_role("Admin")) {
     flash("Only administrators can fetch API data", "danger");
-    die(header("Location: list_cars.php"));
+    redirect("Location: list_cars.php");
 }
 
 $results = [];

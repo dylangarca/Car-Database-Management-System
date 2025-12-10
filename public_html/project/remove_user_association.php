@@ -1,16 +1,17 @@
 <?php
+//dg599 12/7
 require(__DIR__ . "/../../partials/nav1.php");
 
 if (!has_role("Admin")) {
     flash("Only administrators can access this page", "danger");
-    die(header("Location: list_cars.php"));
+    redirect("list_cars.php");
 }
 
 $username_filter = se($_POST, "username_filter", "", false);
 
 if (empty($username_filter)) {
     flash("No username filter provided", "danger");
-    die(header("Location: all_associations.php"));
+    redirect("all_associations.php");
 }
 
 $db = getDB();
@@ -27,5 +28,5 @@ try {
     error_log("Error: " . var_export($e, true));
 }
 
-die(header("Location: all_associations.php"));
+redirect("all_associations.php");
 ?>

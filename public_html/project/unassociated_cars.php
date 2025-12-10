@@ -1,9 +1,10 @@
 <?php
+//dg599 12/7
 require(__DIR__ . "/../../partials/nav1.php");
 
 if (!has_role("Admin")) {
     flash("Only administrators can access this page", "danger");
-    die(header("Location: list_cars.php"));
+    redirect("Location: list_cars.php");
 }
 
 $limit = (int)se($_GET, "limit", 10, false);

@@ -1,16 +1,17 @@
 <?php
+//dg599 12/7
 require(__DIR__ . "/../../partials/nav1.php");
 
 if (!has_role("Admin")) {
     flash("Only administrators can access this page", "danger");
-    die(header("Location: list_cars.php"));
+    redirect("list_cars.php");
 }
 
 $username = se($_GET, "username", "", false);
 
 if (empty($username)) {
     flash("No username provided", "danger");
-    die(header("Location: all_associations.php"));
+    redirect("all_associations.php");
 }
 
 $db = getDB();
@@ -20,7 +21,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
     flash("User not found", "danger");
-    die(header("Location: all_associations.php"));
+    redirect("all_associations.php");
 }
 
 $car_stmt = $db->prepare("SELECT Cars.*, UserCars.created as added_date 

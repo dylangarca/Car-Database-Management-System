@@ -1,9 +1,10 @@
 <?php
+//dg599 12/7
 require(__DIR__ . "/../../partials/nav1.php");
 
 if (!is_logged_in()) {
     flash("You must be logged in to view your garage", "warning");
-    die(header("Location: login.php"));
+    redirect("Location: login.php");
 }
 
 $user_id = get_user_id();
