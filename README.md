@@ -1,4 +1,4 @@
-# 🚗 Car Database Management System
+# 🚗 GarageHub
 
 A full-stack web application that allows users to browse, manage, and save vehicles from both manual entries and a third-party REST API. Built with PHP, MySQL, and Bootstrap, deployed on Heroku.
 
@@ -6,7 +6,7 @@ A full-stack web application that allows users to browse, manage, and save vehic
 
 ## 🌐 Live Demo
 
-> [Car Database Management System](https://dg599-it202-007-prod-0134f160fb38.herokuapp.com/project/)
+> [GarageHub](https://dg599-it202-007-prod-0134f160fb38.herokuapp.com/project/)
 
 ---
 
@@ -27,7 +27,7 @@ A full-stack web application that allows users to browse, manage, and save vehic
 
 ## 📖 Overview
 
-The Car Database Management System is a full-stack web application developed as part of the IT202 course at NJIT. The application allows users to:
+GarageHub is a full-stack web application developed as part of the IT202 course at NJIT. The application allows users to:
 
 - Register and log in securely
 - Browse a database of cars populated from both manual entries and a third-party API
